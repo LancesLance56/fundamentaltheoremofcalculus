@@ -1,25 +1,25 @@
 # The Fundamental Theorem of Calculus
 
-### What it says, why it's true, and why it *has* to be true
+### What it says, why it's true, and why it kind of *has* to be true
 
 ---
 
-## 1. Setting the Stage
+## 1. Setting the stage
 
-Calculus is built from two seemingly unrelated ideas:
+Calculus is basically built from two ideas that seem, at first, to have nothing to do with each other.
 
-- **Differentiation** — the study of *instantaneous rates of change* (slopes of tangent lines).
-- **Integration** — the study of *accumulated quantities* (areas under curves).
+- **Differentiation**: how fast is something changing right now? (slopes, tangent lines)
+- **Integration**: how much has accumulated in total? (area under a curve)
 
-For centuries these were treated as separate problems. The Fundamental Theorem of Calculus (FTC) is the discovery that they are **inverse operations** — two sides of the same coin. This is one of the most important results in all of mathematics, because it turns the (hard, geometric) problem of computing an area into the (easy, algebraic) problem of finding an antiderivative.
+For a long time people treated these as separate problems. The big discovery of the Fundamental Theorem of Calculus (FTC) is that they're actually inverse operations of each other. That's a huge deal, because it means we can compute a hard geometric thing (area) using an easy algebraic thing (an antiderivative), instead of chopping curves into a million rectangles by hand.
 
 ---
 
-## 2. Statement of the Theorem
+## 2. What the theorem actually says
 
 Let $f$ be continuous on $[a, b]$.
 
-### Part 1 (The Accumulation Function is an Antiderivative)
+### Part 1: the accumulation function is an antiderivative
 
 Define
 
@@ -27,140 +27,136 @@ $$
 F(x) = \int_a^x f(t)\, dt, \qquad x \in [a,b].
 $$
 
-Then $F$ is differentiable on $[a,b]$ and
+Then $F$ is differentiable and
 
 $$
 F'(x) = f(x).
 $$
 
-### Part 2 (Evaluation Theorem)
+### Part 2: the evaluation theorem
 
-If $F$ is *any* antiderivative of $f$ (i.e. $F' = f$) on $[a,b]$, then
+If $F$ is any antiderivative of $f$ (so $F' = f$), then
 
 $$
 \int_a^b f(x)\, dx = F(b) - F(a).
 $$
 
-This second statement is the one your question is really about. Let's unpack it carefully, because the way it's usually written hides the beautiful idea inside it. Rewrite it using $f = F'$:
+This second part is really what your question is about. Let's rewrite it using $f = F'$:
 
 $$
 \boxed{\;F(b) - F(a) = \int_a^b F'(x)\, dx\;}
 $$
 
-**In words:** *the total change in a function over an interval equals the area under its derivative over that same interval.*
-
-This is the heart of what you're asking about. Let's build up to understanding *why this must be true* from three different angles: a logical/dimensional angle, an analytical (proof-based) angle, and a geometric/constructive angle.
+In plain English: the total change in a function over an interval equals the area under its derivative over that same interval. Let's actually dig into why that should be true, then why it is true, then a picture of why it's true.
 
 ---
 
-## 3. Why It *Should* Be True — The Logical Perspective
+## 3. Why it should be true (the logical angle)
 
-### 3.1 The "speedometer and odometer" argument
+### 3.1 The speedometer and odometer story
 
-Suppose $F(x)$ tracks your **position** on a road at time $x$. Then $F'(x)$ is your **velocity** — what your speedometer reads at time $x$.
+Say $F(x)$ is your position on a road at time $x$. Then $F'(x)$ is your velocity, what your speedometer reads at time $x$.
 
-Ask yourself: *how far did you travel between time $a$ and time $b$?*
+Now ask: how far did you travel between time $a$ and time $b$? You can answer this two different ways.
 
-There are two ways to answer this:
+1. **Check the odometer.** Distance traveled is just $F(b) - F(a)$. Subtract the start reading from the end reading and you're done. You don't need to know anything about how the trip went, just where you started and where you ended.
+2. **Check the speedometer the whole time.** If you know your velocity $F'(x)$ at every single instant, you can add up all the tiny bits of distance $F'(x)\, dx$ you covered in each little moment. In the limit that sum is $\int_a^b F'(x)\,dx$.
 
-1. **Look at the odometer.** Distance traveled $= F(b) - F(a)$ — just subtract the start reading from the end reading. You don't need to know anything about *how* you got there.
-2. **Look at the speedometer over time.** If you know your velocity $F'(x)$ at every instant, you can recover total distance by "summing up" all the tiny distances $F'(x)\, dx$ you covered in each infinitesimal moment $dx$. That sum, in the limit, is $\int_a^b F'(x)\,dx$.
+These are two totally different-looking calculations, but they're measuring the exact same thing: total distance traveled. There's no reason they'd disagree with each other, because they're not two separate facts about the world, they're two ways of bookkeeping one fact. That's basically what the FTC says: these two bookkeeping methods have to agree.
 
-These are two completely different ways of measuring the *same physical quantity* — total distance traveled. There is no reason they should disagree, because they are not two different facts about the world; they are two different bookkeeping methods for the **same** fact. The FTC is simply the mathematical statement that these two bookkeeping methods must agree.
+So before we even prove anything, this is why the theorem feels like it has to be true. A derivative tells you a rate of change. An integral is defined as the tool that undoes a rate of change and turns it back into a total. So of course "total change" and "area under the rate" line up. They're describing the same accumulation, just from two directions.
 
-This is why the theorem should be true *before you ever prove it*: **the derivative encodes the rate of change, and the integral is defined precisely as the machine that reverses rate-of-change back into total change.** Differentiation zooms in and asks "how fast right now?" Integration zooms back out and asks "how much in total?" They are inverse questions about the same underlying process.
+### 3.2 The telescoping sum (this is really the heart of it)
 
-### 3.2 The telescoping-sum argument (the real engine of the theorem)
+Here's the trick that turns that intuition into something solid, and it only uses algebra.
 
-Here is the key logical trick that makes the "should be true" intuition rigorous. It relies on nothing more than algebra.
-
-Chop $[a,b]$ into $n$ tiny pieces using points
+Chop up $[a,b]$ into $n$ small pieces:
 
 $$
 a = x_0 < x_1 < x_2 < \cdots < x_n = b.
 $$
 
-Now write $F(b) - F(a)$ as a **telescoping sum** — a chain where each term cancels with the next, leaving only the ends:
+Now here's a simple observation. We can write $F(b) - F(a)$ as a telescoping sum:
 
 $$
 F(b) - F(a) = \sum_{i=1}^{n} \big[F(x_i) - F(x_{i-1})\big].
 $$
 
-This is just algebra: $[F(x_1)-F(x_0)] + [F(x_2)-F(x_1)] + \cdots + [F(x_n)-F(x_{n-1})]$. Every interior term appears once with a $+$ and once with a $-$, so it all collapses back to $F(x_n) - F(x_0) = F(b)-F(a)$. **No calculus has been used yet** — this identity is true for *any* function $F$, continuous or not.
+This is just bookkeeping: $[F(x_1)-F(x_0)] + [F(x_2)-F(x_1)] + \cdots + [F(x_n)-F(x_{n-1})]$. Every middle term shows up once as a plus and once as a minus, so it all cancels except the very first and very last term, leaving $F(x_n) - F(x_0) = F(b) - F(a)$. Notice we haven't used any calculus yet. This is true for literally any function $F$.
 
-Now bring in calculus. Each little piece $F(x_i) - F(x_{i-1})$ is the change in $F$ over a *tiny* interval $[x_{i-1}, x_i]$. But over a tiny interval, the derivative $F'$ barely changes, so $F$ behaves almost exactly like a straight line with slope $F'(x_i^*)$ for some point $x_i^*$ in that piece. This gives (and the Mean Value Theorem below makes this exact, not approximate):
+Now let's bring calculus in. Each piece $F(x_i) - F(x_{i-1})$ is the change in $F$ over a tiny little interval. Over a small enough interval, $F$ looks almost like a straight line, with slope roughly $F'(x_i^*)$ for some point $x_i^*$ in that piece. So roughly:
 
 $$
 F(x_i) - F(x_{i-1}) \approx F'(x_i^*)\,(x_i - x_{i-1}).
 $$
 
-Substituting into the telescoping sum:
+Plug that into the telescoping sum:
 
 $$
-F(b) - F(a) = \sum_{i=1}^n F(x_i)-F(x_{i-1}) \approx \sum_{i=1}^n F'(x_i^*)\, \Delta x_i.
+F(b) - F(a) \approx \sum_{i=1}^n F'(x_i^*)\, \Delta x_i.
 $$
 
-But look at the right-hand side — that is *exactly* the Riemann sum that defines $\int_a^b F'(x)\,dx$! As $n \to \infty$ and each $\Delta x_i \to 0$, the approximation becomes exact and the sum converges to the integral. Hence:
+Take a look at the right side. That's exactly a Riemann sum, the thing that defines $\int_a^b F'(x)\,dx$. As we chop the interval into more and more pieces, the approximation gets better and better, and in the limit:
 
 $$
 F(b) - F(a) = \int_a^b F'(x)\, dx.
 $$
 
-**This is the logical core of the entire theorem.** The reason the "total change" equals the "area under the derivative" is that:
+That's really the whole idea. The reason "total change" equals "area under the derivative" comes down to three simple facts stacked on top of each other:
 
-- Total change can *always* be broken into a telescoping sum of small changes (pure algebra).
-- Each small change is *approximately* slope $\times$ width, because a differentiable function looks locally linear (this is the very meaning of "derivative").
-- Summing "slope $\times$ width" pieces and taking the limit is, by definition, exactly what a definite integral computes (area under the curve = sum of thin rectangle areas, height $\times$ width).
+- Any total change can be broken into a chain of small changes that telescopes back to the total. That's just algebra.
+- Each small change is approximately slope times width, because that's basically what it means for a function to be differentiable, it looks like a straight line up close.
+- Adding up a bunch of "slope times width" pieces and taking a limit is literally the definition of a definite integral.
 
-So the FTC isn't a coincidence bridging two unrelated fields — it is what you get when you take the definition of a derivative (local linearity) and glue infinitely many of these local pieces together using nothing but the telescoping-sum trick. **Local linear approximation, summed up globally, reconstructs the whole.**
+So the FTC isn't some weird coincidence linking two unrelated branches of math. It's what falls out naturally once you take "a derivative means locally linear" and glue infinitely many of those tiny linear pieces back together using the telescoping trick.
 
 ---
 
-## 4. Why It *Is* True — The Analytical / Rigorous Perspective
+## 4. Why it is true (the actual proof)
 
-The heuristic above becomes a real proof once we replace "$\approx$" with an exact statement — supplied by the **Mean Value Theorem (MVT)**.
+The argument above works, but it has one soft spot: that "$\approx$" sign. We can make it exact using the **Mean Value Theorem (MVT)**.
 
-### 4.1 Proof of Part 2, given Part 1
+### 4.1 Proving part 2, assuming part 1
 
-**Mean Value Theorem.** If $F$ is continuous on $[x_{i-1}, x_i]$ and differentiable on $(x_{i-1}, x_i)$, then there exists some point $x_i^* \in (x_{i-1}, x_i)$ such that
+**MVT:** if $F$ is continuous on $[x_{i-1}, x_i]$ and differentiable on the open interval, then there's some point $x_i^*$ in between where
 
 $$
 F'(x_i^*) = \frac{F(x_i) - F(x_{i-1})}{x_i - x_{i-1}}.
 $$
 
-This isn't an approximation — it is an *exact equality* for some particular point $x_i^*$ inside the subinterval. Rearranged:
+This isn't an approximation anymore, it's an exact equality for some specific $x_i^*$. Rearranging:
 
 $$
-F(x_i) - F(x_{i-1}) = F'(x_i^*)\,\Delta x_i \quad \text{exactly}.
+F(x_i) - F(x_{i-1}) = F'(x_i^*)\,\Delta x_i, \quad \text{exactly}.
 $$
 
-Now redo the telescoping sum, but this time with no approximation:
+Redo the telescoping sum with this exact version:
 
 $$
 F(b) - F(a) = \sum_{i=1}^n \big[F(x_i)-F(x_{i-1})\big] = \sum_{i=1}^n F'(x_i^*)\, \Delta x_i.
 $$
 
-The right-hand side is a genuine Riemann sum for $f = F'$, using the specific sample points $x_i^*$ guaranteed by the MVT. Since $f$ is continuous (hence Riemann-integrable), *every* Riemann sum — regardless of which sample points are used — converges to the same limit as the mesh size $\max \Delta x_i \to 0$:
+The right side is a genuine Riemann sum for $f = F'$, using whatever sample points the MVT happened to give us. Since $f$ is continuous, it's integrable, and every Riemann sum converges to the same value as the pieces get smaller, no matter which sample points you use:
 
 $$
 \lim_{n\to\infty} \sum_{i=1}^n F'(x_i^*)\, \Delta x_i = \int_a^b F'(x)\, dx.
 $$
 
-But the left-hand side, $F(b)-F(a)$, doesn't depend on $n$ at all — it's a fixed constant. A sequence of numbers that is constant and also converges to $\int_a^b F'(x)\,dx$ must simply *equal* that integral. Hence:
+But look at the left side, $F(b) - F(a)$. It doesn't change no matter how we chop up the interval, it's just a fixed number. A fixed number that also happens to be the limit of a sequence has to equal that limit. So:
 
 $$
 F(b) - F(a) = \int_a^b F'(x)\, dx = \int_a^b f(x)\,dx. \qquad \blacksquare
 $$
 
-### 4.2 Proof of Part 1 (why the accumulation function's derivative gives back $f$)
+### 4.2 Proving part 1
 
-Define $F(x) = \int_a^x f(t)\,dt$. We compute $F'(x)$ directly from the definition of a derivative:
+Define $F(x) = \int_a^x f(t)\,dt$. Take the derivative directly from the definition:
 
 $$
 F'(x) = \lim_{h \to 0} \frac{F(x+h) - F(x)}{h} = \lim_{h\to 0} \frac{1}{h}\int_x^{x+h} f(t)\, dt.
 $$
 
-Since $f$ is continuous, on the tiny interval $[x, x+h]$ the value of $f$ is close to $f(x)$ (this is exactly what continuity means). By the **Extreme Value Theorem**, $f$ attains a min $m_h$ and max $M_h$ on $[x,x+h]$, and both $m_h, M_h \to f(x)$ as $h \to 0$. Bounding the integral between rectangles:
+Since $f$ is continuous, on the tiny interval $[x, x+h]$ the values of $f$ are all really close to $f(x)$, that's basically what continuity means. Let $m_h$ and $M_h$ be the min and max of $f$ on that little interval. Then
 
 $$
 m_h \cdot h \;\le\; \int_x^{x+h} f(t)\,dt \;\le\; M_h \cdot h
@@ -168,35 +164,33 @@ m_h \cdot h \;\le\; \int_x^{x+h} f(t)\,dt \;\le\; M_h \cdot h
 m_h \;\le\; \frac{1}{h}\int_x^{x+h} f(t)\, dt \;\le\; M_h.
 $$
 
-Squeezing $h \to 0$ forces both bounds to $f(x)$, so by the **Squeeze Theorem**:
+As $h \to 0$, both $m_h$ and $M_h$ get squeezed toward $f(x)$, so by the squeeze theorem:
 
 $$
 F'(x) = f(x). \qquad \blacksquare
 $$
 
-Intuitively: the *rate* at which area accumulates under a curve, at a given point $x$, is simply the height of the curve at that point — because for an infinitesimally thin sliver, "area added per unit width" *is* the height.
+The intuitive version: the rate at which area is piling up under a curve at a point $x$ is just the height of the curve at $x$. If you're adding a super thin sliver of area, "area added per unit of width" is just the height of that sliver.
 
 ---
 
-## 5. Why It *Should* Be True — The Geometric Perspective
+## 5. Why it should be true (the picture version)
 
-Picture the graph of $F'(x) = f(x)$, and picture the area under it between $a$ and $b$.
+Picture the graph of $F' = f$, and picture the area under it between $a$ and $b$.
 
-- **Cut the interval $[a,b]$ into thin strips** of width $\Delta x$.
-- The area of the strip at position $x_i$ is approximately (height)(width) $= f(x_i)\,\Delta x = F'(x_i)\,\Delta x$.
-- But $F'(x_i)\,\Delta x$ is *precisely* the amount by which $F$ changes as you move across that strip — because the derivative is defined as "change in $F$ per unit change in $x$," so over a small step $\Delta x$, the change in $F$ is (rate)$\times$(step size).
-- **Adding up all the strip areas is therefore the same operation as adding up all the small changes in $F$** across the whole interval.
-- Adding up all the small changes in $F$ across $[a,b]$ just gives you the total, net change: $F(b) - F(a)$ — everything in between cancels via telescoping, exactly as in Section 3.2.
+Cut that interval into thin strips of width $\Delta x$. The area of the strip near $x_i$ is roughly height times width, so $f(x_i)\,\Delta x = F'(x_i)\,\Delta x$.
 
-So geometrically: **the area under the derivative's graph is not a coincidental match to the total change in the original function — it is a different way of visualizing the exact same accumulation process.** Every rectangle of area under $f=F'$ literally *is* a piece of the total change in $F$, just drawn as a rectangle instead of written as a difference.
+But $F'(x_i)\,\Delta x$ is also exactly how much $F$ changes as you move across that strip. That's what a derivative means, "rate times a small step" gives you the change over that step.
 
-This is why swapping the words "area under the derivative" and "total change in the function" feels natural once you see it: they're not two facts that happen to agree, they are **two descriptions of one construction**.
+So adding up all those tiny strip areas is literally the same thing as adding up all the tiny changes in $F$ across the whole interval. And adding up all the tiny changes in $F$ just gives you the net change, $F(b) - F(a)$, since everything in between cancels out the same way it did in the telescoping sum.
+
+So here's the punchline: the area under the derivative's graph isn't some separate quantity that happens to match the total change in the original function. It's the same accumulation, just drawn as rectangles instead of written as a subtraction. Every little rectangle under $f = F'$ literally is a piece of the total change in $F$.
 
 ---
 
-## 6. A Concrete Worked Example
+## 6. A quick example
 
-Let $F(x) = x^2$, so $F'(x) = 2x$. Take the interval $[1, 3]$.
+Let $F(x) = x^2$, so $F'(x) = 2x$. Take $[1,3]$.
 
 **Odometer method (just subtract):**
 
@@ -210,25 +204,25 @@ $$
 \int_1^3 2x\, dx = \Big[x^2\Big]_1^3 = 9 - 1 = 8.
 $$
 
-Both give $8$ — not by coincidence, but because they are two computations of the identical quantity: the net change in $F$ across $[1,3]$.
+Same answer, and not by luck. Both are computing the exact same quantity, the net change in $F$ over $[1,3]$.
 
-Geometrically, $\int_1^3 2x\,dx$ is the area of the trapezoid under the line $y = 2x$ from $x=1$ to $x=3$ — with parallel sides of height $2$ and $6$ and width $2$:
+Geometrically, $\int_1^3 2x\,dx$ is just the area of the trapezoid under the line $y=2x$ from $x=1$ to $x=3$, with heights $2$ and $6$ and width $2$:
 
 $$
 \text{Area} = \frac{(2+6)}{2}\cdot 2 = 8.
 $$
 
-This trapezoid's area is nothing but $F(3)-F(1)$ redrawn as a picture.
+That trapezoid is nothing but $F(3) - F(1)$ drawn as a shape instead of written as a subtraction.
 
 ---
 
-## 7. Summary: Three Lenses, One Idea
+## 7. Wrapping it up
 
-| Perspective | Core idea |
+| Angle | Core idea |
 |---|---|
-| **Logical (speedometer/odometer)** | Total change and accumulated rate are two bookkeeping methods for the same physical quantity — they must agree. |
-| **Logical (telescoping sum)** | Total change algebraically decomposes into a chain of small changes; small changes are (slope)$\times$(width) by definition of derivative; summing those is exactly what an integral means. |
-| **Analytical (MVT proof)** | The Mean Value Theorem makes "small change $\approx$ slope $\times$ width" *exact*, converting the telescoping sum into a genuine Riemann sum that equals the integral in the limit. |
-| **Geometric** | Each rectangle of area under $f = F'$ *is* a small change in $F$; summing the areas *is* summing the changes, which telescopes to $F(b)-F(a)$. |
+| Speedometer and odometer | Total change and accumulated rate are just two ways of measuring the same thing, so of course they match. |
+| Telescoping sum | Total change breaks into a chain of small changes. Each small change is slope times width, since that's what "derivative" means locally. Summing those pieces and taking a limit is exactly what an integral is. |
+| MVT proof | The Mean Value Theorem turns "small change is roughly slope times width" into an exact statement, so the telescoping sum becomes an actual Riemann sum equal to the integral. |
+| Picture | Each rectangle of area under $f = F'$ is a small change in $F$, so summing the rectangles sums the changes, which telescopes to $F(b) - F(a)$. |
 
-The Fundamental Theorem of Calculus works because **a derivative is a "rate of change," and an integral is the machine built to undo that — to take an infinite collection of infinitesimal rates and reassemble them into the total, accumulated change.** Differentiation breaks a function into infinitesimal pieces of information (slopes); integration is the precise inverse operation of gluing those infinitesimal pieces back together. That total, once reassembled, cannot be anything other than the net difference between where you started and where you ended up — $F(b) - F(a)$.
+At the end of the day, the FTC works because a derivative is just a rate of change, and an integral is the tool built specifically to undo that, to take a bunch of infinitely small rates and glue them back together into the total change. Differentiation chops a function up into tiny pieces of information about its slope. Integration is the reverse process, gluing those pieces back together. And once you glue them all back together, what you get can't be anything other than the difference between where the function started and where it ended up, $F(b) - F(a)$.
